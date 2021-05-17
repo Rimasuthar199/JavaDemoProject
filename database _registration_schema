@@ -1,0 +1,57 @@
+create database registration;
+
+CREATE TABLE `user_basic_details` (
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(200) DEFAULT NULL,
+  `last_name` varchar(200) DEFAULT NULL,
+  `email_id` varchar(150) NOT NULL,
+  `date_of_birth` date DEFAULT NULL,
+  `joining_date` date DEFAULT NULL,
+  `active` tinyint DEFAULT '1',
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  `modified` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `email_id_UNIQUE` (`email_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `user_address` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `city` varchar(45) DEFAULT NULL,
+  `state` varchar(45) DEFAULT NULL,
+  `country` varchar(45) DEFAULT NULL,
+  `zipcode` varchar(45) DEFAULT NULL,
+  `address_1` varchar(45) DEFAULT NULL,
+  `address_2` varchar(45) DEFAULT NULL,
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  `modified` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_add_fk_idx` (`user_id`),
+  CONSTRAINT `user_add_fk` FOREIGN KEY (`user_id`) REFERENCES `user_basic_details` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE `user_contact_details` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  `modified` datetime DEFAULT CURRENT_TIMESTAMP,
+  `contact_no` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_fk_idx` (`user_id`),
+  CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `user_basic_details` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `user_login_details` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `username` varchar(150) DEFAULT NULL,
+  `password` text,
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  `modified` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_login_fk_idx` (`user_id`),
+  CONSTRAINT `user_login_fk` FOREIGN KEY (`user_id`) REFERENCES `user_basic_details` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
