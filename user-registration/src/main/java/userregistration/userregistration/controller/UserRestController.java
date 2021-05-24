@@ -1,6 +1,7 @@
 package userregistration.userregistration.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import userregistration.userregistration.beans.UserDetails;
+import userregistration.userregistration.beans.UserLogin;
 import userregistration.userregistration.exception.ExceptionMessage;
 import userregistration.userregistration.service.UserService;
 
+
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/user")
 public class UserRestController {
@@ -56,7 +60,7 @@ public class UserRestController {
 		return userService.editUserDetails(userDetails);
 	}
 
-	@DeleteMapping("/user/{userId}")
+	@DeleteMapping("/delete/{userId}")
 	public String deleteUser(@RequestParam(required = true) boolean soft_del, @PathVariable Integer userId)
 			throws Exception {
 		return userService.deleteUser(soft_del, userId);
@@ -68,4 +72,10 @@ public class UserRestController {
 			throws Exception {
 		return userService.findByNameLastNamePincode(firstName, lastName, pincode);
 	}
+	
+	@GetMapping("/login")
+	public UserLogin checkCrdentails(@RequestParam(required = true)String userName, String password) throws Exception {
+		return userService.fetchCredentail(userName, password);
+	}
+	
 }

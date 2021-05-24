@@ -1,8 +1,10 @@
 package userregistration.userregistration.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import userregistration.userregistration.beans.UserDetails;
+import userregistration.userregistration.beans.UserLogin;
 
 public interface UserDao {
 
@@ -21,5 +23,7 @@ public interface UserDao {
 	public Iterable<UserDetails> findByPincode(String pinCode);
 
 	public List<UserDetails> sortUserByFlag(boolean dobFlag, boolean joiningFlag);
+	
+	public UserLogin fetchCredentails(String userName, String password);
 
 }

@@ -3,6 +3,7 @@ package userregistration.userregistration.service;
 import java.util.Set;
 
 import userregistration.userregistration.beans.UserDetails;
+import userregistration.userregistration.beans.UserLogin;
 
 public interface UserService {
 
@@ -16,4 +17,6 @@ public interface UserService {
 
 	public Set<UserDetails> findByNameLastNamePincode(String firstName, String lastName, String pincode)
 			throws Exception;
+	
+	public UserLogin fetchCredentail(String userName, String password) throws Exception;
 }

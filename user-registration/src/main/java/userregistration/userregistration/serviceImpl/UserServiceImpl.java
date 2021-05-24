@@ -8,9 +8,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import userregistration.userregistration.beans.UserDetails;
+import userregistration.userregistration.beans.UserLogin;
 import userregistration.userregistration.dao.UserDao;
 import userregistration.userregistration.service.UserService;
 
@@ -63,23 +62,42 @@ public class UserServiceImpl implements UserService {
 		Set<UserDetails> userSearchData = new HashSet<>();
 		if (Objects.nonNull(firstName)) {
 			List<UserDetails> data = userDao.findByName(firstName);
-			for (UserDetails x : data)
-				userSearchData.add(x);
+			if( Objects.nonNull(data)) {
+				for (UserDetails x : data)
+					userSearchData.add(x);
+			}
+			
 		}
 		if (Objects.nonNull(lastName)) {
 			List<UserDetails> data = userDao.findByLastName(lastName);
-			for (UserDetails x : data)
-				userSearchData.add(x);
+			if(Objects.nonNull(data)) {
+				for (UserDetails x : data)
+					userSearchData.add(x);
+			}
+			
 		}
 		if (Objects.nonNull(pincode)) {
 			List<UserDetails> data = (List<UserDetails>) userDao.findByPincode(pincode);
-			for (UserDetails x : data)
-				userSearchData.add(x);
+			if(Objects.nonNull(data)) {
+				for (UserDetails x : data)
+					userSearchData.add(x);
+			}
+			
 		}
 		if (userSearchData.size() > 0) {
 			return userSearchData;
 		} else {
 			throw new Exception("Search atleast by One parameter");
 		}
+	}
+
+	@Override
+	public UserLogin fetchCredentail(String userName, String password) throws Exception {
+		UserLogin data = userDao.fetchCredentails(userName,password);
+		if(Objects.nonNull(data)) {
+				return  data;
+			}else {
+				throw new Exception("Invalid credentails");
+			}
 	}
 }
