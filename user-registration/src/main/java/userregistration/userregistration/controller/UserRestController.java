@@ -78,4 +78,5 @@ public class UserRestController {
 		return userService.fetchCredentail(userName, password);
 	}
 	
+	
 }
