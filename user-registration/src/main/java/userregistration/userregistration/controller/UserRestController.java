@@ -77,6 +77,4 @@ public class UserRestController {
 	public UserLogin checkCrdentails(@RequestParam(required = true)String userName, String password) throws Exception {
 		return userService.fetchCredentail(userName, password);
 	}
-	
-	
 }
