@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import userregistration.userregistration.beans.UserAddress;
 import userregistration.userregistration.beans.UserContact;
-import userregistration.userregistration.beans.UserDetails;
+import userregistration.userregistration.beans.User;
 import userregistration.userregistration.beans.UserLogin;
 import userregistration.userregistration.dao.UserDao;
 import userregistration.userregistration.repository.UserAddressRepository;
@@ -35,7 +35,7 @@ public class UserDaoImpl implements UserDao {
 	UserLoginRepository userLoginRepository;
 
 	@Override
-	public UserDetails saveUser(UserDetails userDetails) {
+	public User saveUser(User userDetails) {
 
 		userDetails.setCreated(new Date());
 		userDetails.setModified(new Date());
@@ -62,10 +62,11 @@ public class UserDaoImpl implements UserDao {
 
 		userLogin.setCreated(userDetails.getCreated());
 		userLogin.setUserDetails(userDetails);
+		userLogin.setEmailId(userDetails.getEmailId());
 		userLoginRepository.save(userLogin);
 		userDetails.setUserAddress(userAddress);
 		userDetails.setUserContact(userContact);
-
+		
 		userDetails.setUserLogin(userLogin);
 
 		System.out.println("User Saved SuccessFully !!!!");
@@ -74,7 +75,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public List<UserDetails> findAll() {
+	public List<User> findAll() {
 		return userRepository.findAllUser();
 	}
 
@@ -83,10 +84,10 @@ public class UserDaoImpl implements UserDao {
 		/*
 		 * flag = 0 hardDelete 1 soft delete
 		 */
-		Optional<UserDetails> userDetails = userRepository.findById(userId);
+		Optional<User> userDetails = userRepository.findById(userId);
 
 		if (!flag) {
-			UserDetails user = userDetails.get();
+			User user = userDetails.get();
 			List<UserAddress> userAddress = user.getUserAddress();
 			if (userAddress.size() > 0) {
 				userAddress.forEach(users -> {
@@ -103,7 +104,7 @@ public class UserDaoImpl implements UserDao {
 			userRepository.deleteById(userId);
 		} else {
 			if (userDetails.isPresent()) {
-				UserDetails user = userDetails.get();
+				User user = userDetails.get();
 				user.setActiveFlag(false);
 				userRepository.save(user);
 			}
@@ -112,7 +113,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public UserDetails updateUser(UserDetails userDetails) {
+	public User updateUser(User userDetails) {
 
 		if (userDetails.getUserId() != null) {
 			List<UserAddress> userAddress = userDetails.getUserAddress();
@@ -134,6 +135,7 @@ public class UserDaoImpl implements UserDao {
 			UserLogin userLogin = userDetails.getUserLogin();
 			if (userLogin.getId() != null) {
 				userLogin.setUserDetails(userDetails);
+				userLogin.setEmailId(userDetails.getEmailId());
 				userLogin.setModified(new Date());
 				userLoginRepository.save(userLogin);
 			}
@@ -146,8 +148,8 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public List<UserDetails> findByName(String name) {
-		List<UserDetails> userList = userRepository.findByName(name);
+	public List<User> findByName(String name) {
+		List<User> userList = userRepository.findByName(name);
 		if (userList.size() > 0) {
 			return userList;
 		}
@@ -155,8 +157,8 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public List<UserDetails> findByLastName(String lastName) {
-		List<UserDetails> userList = userRepository.findByLastName(lastName);
+	public List<User> findByLastName(String lastName) {
+		List<User> userList = userRepository.findByLastName(lastName);
 		if (userList.size() > 0) {
 			return userList;
 		}
@@ -164,7 +166,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public Iterable<UserDetails> findByPincode(String pinCode) {
+	public Iterable<User> findByPincode(String pinCode) {
 		List<UserAddress> addressList = userAddressRepository.findByZipcode(pinCode);
 		List<Integer> userId = new ArrayList<Integer>();
 		if (addressList.size() > 0) {
@@ -173,7 +175,7 @@ public class UserDaoImpl implements UserDao {
 			});
 		}
 		if (userId.size() > 0) {
-			Iterable<UserDetails> userData = userRepository.findAllById(userId);
+			Iterable<User> userData = userRepository.findAllById(userId);
 			if (Objects.nonNull(userData)) {
 				return userData;
 			}
@@ -182,7 +184,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public List<UserDetails> sortUserByFlag(boolean dobFlag, boolean joiningFlag) {
+	public List<User> sortUserByFlag(boolean dobFlag, boolean joiningFlag) {
 
 		if (dobFlag && joiningFlag) {
 			return userRepository.sortByDobAndJoiningDate();
@@ -200,6 +202,11 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public UserLogin fetchCredentails(String userName, String password) {
 		return userLoginRepository.findByUserName(userName,password);
+	}
+
+	@Override
+	public Iterable<User> deactivateUser() {
+		return userRepository.findDeactiveuser();
 	}
 
 }

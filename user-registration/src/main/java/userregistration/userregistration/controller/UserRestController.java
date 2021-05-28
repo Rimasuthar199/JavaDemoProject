@@ -1,6 +1,10 @@
 package userregistration.userregistration.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import userregistration.userregistration.beans.UserDetails;
+import userregistration.userregistration.beans.User;
 import userregistration.userregistration.beans.UserLogin;
 import userregistration.userregistration.exception.ExceptionMessage;
 import userregistration.userregistration.service.UserService;
@@ -36,9 +40,14 @@ public class UserRestController {
 		return "OKAY!";
 	}
 	
+	  @RequestMapping("/resource")
+	  public Principal user(Principal user) {
+	      return user;
+	  }
+	
 
 	@PostMapping(value = "/saveUser")
-	public Object saveUSerDetails(@RequestBody UserDetails userDetails) throws Exception {
+	public Object saveUSerDetails(@RequestBody User userDetails) throws Exception {
 		userDetails =userService.saveUserDetails(userDetails);
 		if(userDetails!=null) {
 			return userDetails;
@@ -49,14 +58,15 @@ public class UserRestController {
 		}
 	}
 
+
 	@GetMapping("/findUser")
-	public Iterable<UserDetails> geAllUser(@RequestParam(required = false) boolean sortByDob,
+	public Iterable<User> geAllUser(@RequestParam(required = false) boolean sortByDob,
 			@RequestParam(required = false) boolean sortByJoiningDate) throws Exception {
 		return userService.findAllUserAndSort(sortByDob, sortByJoiningDate);
 	}
 
 	@PutMapping("/editUser")
-	public UserDetails editUser(@RequestBody UserDetails userDetails) throws Exception {
+	public User editUser(@RequestBody User userDetails) throws Exception {
 		return userService.editUserDetails(userDetails);
 	}
 
@@ -67,7 +77,7 @@ public class UserRestController {
 	}
 
 	@GetMapping("/search")
-	public Iterable<UserDetails> findUserByNameLastNamePincode(@RequestParam(required = false) String firstName,
+	public Iterable<User> findUserByNameLastNamePincode(@RequestParam(required = false) String firstName,
 			@RequestParam(required = false) String lastName, @RequestParam(required = false) String pincode)
 			throws Exception {
 		return userService.findByNameLastNamePincode(firstName, lastName, pincode);
@@ -76,5 +86,10 @@ public class UserRestController {
 	@GetMapping("/login")
 	public UserLogin checkCrdentails(@RequestParam(required = true)String userName, String password) throws Exception {
 		return userService.fetchCredentail(userName, password);
+	}
+	
+	@GetMapping("/deactivate")
+	public Iterable<User> deactiveUser() throws Exception{
+		return userService.deactiveUser();	
 	}
 }

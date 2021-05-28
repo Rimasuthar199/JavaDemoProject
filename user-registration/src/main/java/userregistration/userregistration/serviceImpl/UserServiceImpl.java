@@ -8,7 +8,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import userregistration.userregistration.beans.UserDetails;
+import userregistration.userregistration.beans.User;
 import userregistration.userregistration.beans.UserLogin;
 import userregistration.userregistration.dao.UserDao;
 import userregistration.userregistration.service.UserService;
@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 	UserDao userDao;
 
 	@Override
-	public UserDetails saveUserDetails(UserDetails userDetails) throws Exception {
+	public User saveUserDetails(User userDetails) throws Exception {
 
 		if (Objects.nonNull(userDetails)) {
 			return userDao.saveUser(userDetails);
@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Iterable<UserDetails> findAllUserAndSort(boolean sortByDob, boolean joiningDate) throws Exception {
+	public Iterable<User> findAllUserAndSort(boolean sortByDob, boolean joiningDate) throws Exception {
 
 		if (sortByDob || joiningDate) {
 			return userDao.sortUserByFlag(sortByDob, joiningDate);
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDetails editUserDetails(UserDetails userDetails) throws Exception {
+	public User editUserDetails(User userDetails) throws Exception {
 		if (Objects.nonNull(userDetails)) {
 			userDao.updateUser(userDetails);
 			return userDetails;
@@ -57,29 +57,29 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Set<UserDetails> findByNameLastNamePincode(String firstName, String lastName, String pincode)
+	public Set<User> findByNameLastNamePincode(String firstName, String lastName, String pincode)
 			throws Exception {
-		Set<UserDetails> userSearchData = new HashSet<>();
+		Set<User> userSearchData = new HashSet<>();
 		if (Objects.nonNull(firstName)) {
-			List<UserDetails> data = userDao.findByName(firstName);
+			List<User> data = userDao.findByName(firstName);
 			if( Objects.nonNull(data)) {
-				for (UserDetails x : data)
+				for (User x : data)
 					userSearchData.add(x);
 			}
 			
 		}
 		if (Objects.nonNull(lastName)) {
-			List<UserDetails> data = userDao.findByLastName(lastName);
+			List<User> data = userDao.findByLastName(lastName);
 			if(Objects.nonNull(data)) {
-				for (UserDetails x : data)
+				for (User x : data)
 					userSearchData.add(x);
 			}
 			
 		}
 		if (Objects.nonNull(pincode)) {
-			List<UserDetails> data = (List<UserDetails>) userDao.findByPincode(pincode);
+			List<User> data = (List<User>) userDao.findByPincode(pincode);
 			if(Objects.nonNull(data)) {
-				for (UserDetails x : data)
+				for (User x : data)
 					userSearchData.add(x);
 			}
 			
@@ -99,5 +99,15 @@ public class UserServiceImpl implements UserService {
 			}else {
 				throw new Exception("Invalid credentails");
 			}
+	}
+
+	@Override
+	public Iterable<User> deactiveUser() throws Exception {
+		Iterable<User> userData = userDao.deactivateUser();
+		if(Objects.nonNull(userData)) {
+			return userData;
+		}else {
+			throw new Exception("No More Deactivated User");
+		}
 	}
 }

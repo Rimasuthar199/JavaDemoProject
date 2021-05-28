@@ -38,7 +38,7 @@ public class UserContact extends BaseBean implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	@JsonProperty("user_id")
-	private UserDetails userDetails;
+	private User userDetails;
 
 	@Column(name = "contact_no")
 	@JsonProperty("contact_no")

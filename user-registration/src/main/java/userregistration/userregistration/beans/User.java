@@ -1,6 +1,7 @@
 package userregistration.userregistration.beans;
 
 import java.io.Serializable;
+import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Date;
 import java.util.List;
 
@@ -32,9 +33,9 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "user_basic_details")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = UserDetails.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = User.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDetails extends BaseBean implements Serializable {
+public class User extends BaseBean implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
