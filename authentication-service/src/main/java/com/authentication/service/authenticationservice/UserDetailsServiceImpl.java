@@ -27,7 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		String password = getPassword(user.getPassword());
 		user.setPassword(password);
 		
-		List<UserLoginRoleMpg> userDetailsList = userLoginProxy.findbyUserLoginDtl(45);
+		List<UserLoginRoleMpg> userDetailsList = userLoginProxy.findbyUserLoginDtl(user.getUserId());
 		
 		Set<RoleDto> role = new HashSet<>();
 		

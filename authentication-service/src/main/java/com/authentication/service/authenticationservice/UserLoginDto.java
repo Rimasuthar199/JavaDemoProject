@@ -19,7 +19,7 @@ public class UserLoginDto extends BaseBean implements Serializable {
 	@JsonProperty("id")
 	private Integer id;
 
-	@JsonProperty("username")
+	@JsonProperty("userName")
 	private String userName;
 
 	
@@ -28,6 +28,9 @@ public class UserLoginDto extends BaseBean implements Serializable {
 	
 	@JsonProperty("emailid")
 	private String emailId;
+	
+	@JsonProperty("userId")
+	private Integer userId;
 	
 	private Set<RoleDto> role;
 	

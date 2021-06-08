@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
+import userportal.beans.User;
 
 @Getter
 @Setter
@@ -28,6 +29,9 @@ public class UserLoginDto extends BaseBean implements Serializable {
 	
 	@JsonProperty("emailid")
 	private String emailId;
+	
+	@JsonProperty("user_id")
+	private Integer userId;
 	
 	@JsonProperty("role")
 	Set<RoleDto> role = new HashSet<>();

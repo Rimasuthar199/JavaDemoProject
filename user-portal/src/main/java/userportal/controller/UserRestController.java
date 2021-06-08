@@ -113,6 +113,7 @@ public class UserRestController {
 	public UserLoginDto findUser(@PathVariable String userName) {
 		UserLogin userLogin = userLoginRepository.findByUserName(userName);
 		UserLoginDto loginDto = new UserLoginDto();
+		loginDto.setUserId(userLogin.getUserDetails().getUserId());
 		BeanUtils.copyProperties(userLogin, loginDto);
 		return loginDto;
 	}

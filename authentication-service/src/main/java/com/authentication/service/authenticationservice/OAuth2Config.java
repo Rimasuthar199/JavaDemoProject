@@ -87,8 +87,8 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 //      .tokenStore(tokenStore())
 //     .accessTokenConverter(tokenEnhancer());
       
-      endpoints.tokenStore(tokenStore()).authenticationManager(authenticationManager).accessTokenConverter(tokenEnhancer())
-      .userDetailsService(userDetailsService);
+	      endpoints.authenticationManager(authenticationManager).tokenStore(tokenStore())
+	      .accessTokenConverter(tokenEnhancer());
    }
    @Override
    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {

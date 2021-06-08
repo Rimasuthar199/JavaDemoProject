@@ -57,7 +57,7 @@ public class MyUserDetails implements UserDetails{
 
 	@Override
 	public boolean isEnabled() {
-		return true;//userLogin.getUserDetails().isActiveFlag();
+		return true;
 	}
 
 	@Override
